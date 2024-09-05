@@ -70,6 +70,8 @@ export type Options<T extends MediaType = MediaType.ALL> = {
   thumbnailWidth?: number;
   thumbnailHeight?: number;
   haveThumbnail?: boolean;
+  cropWidth?: number;
+  cropHeight: number;
 };
 
 export interface SinglePickerOptions {

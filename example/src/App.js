@@ -49,6 +49,9 @@ export default function App() {
         singleSelectedMode,
         isCrop: true,
         usedCameraButton: false,
+        cropWidth: 300,
+        cropHeight: 300,
+        type: 'image',
       });
 
       const crop = response.crop;

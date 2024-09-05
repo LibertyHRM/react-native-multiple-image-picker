@@ -20,6 +20,12 @@ class CustomPhotoPickerViewController: TLPhotosPickerViewController {
         if config.isPreview {
             NotificationCenter.default.addObserver(self, selector: #selector(self.handleCellLongPress(_:)), name: Cell.longPressNotification, object: nil)
         }
+
+        if config.isCrop {
+            self.doneButton.title = nil
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+            collectionView.addGestureRecognizer(tapGesture)
+        }
     }
 
     deinit {
@@ -59,6 +65,17 @@ class CustomPhotoPickerViewController: TLPhotosPickerViewController {
                 self.viewerController?.delegate = self
 
                 self.present(self.viewerController!, animated: true, completion: nil)
+            }
+        }
+    }
+
+    @objc func handleTap(_ gesture: UITapGestureRecognizer) {
+        let point = gesture.location(in: collectionView)
+
+        if let indexPath = collectionView.indexPathForItem(at: point) {
+            guard let cell = self.collectionView.cellForItem(at: indexPath) as? TLPhotoCollectionViewCell, let localID = cell.asset?.localIdentifier else { return }
+            if let asset = TLPHAsset.asset(with: localID) {
+                self.dismissPhotoPicker!([asset])
             }
         }
     }

@@ -34,4 +34,32 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return resizedImage
     }
+
+    func getFileSize(_ path: String) -> Int64? {
+        // Remove "file://" prefix if it exists
+        var cleanedPath = path
+        if let url = URL(string: path), url.scheme == "file" {
+            cleanedPath = url.path
+        }
+        
+        let fileURL = URL(fileURLWithPath: cleanedPath)
+        
+        guard FileManager.default.fileExists(atPath: fileURL.path) else {
+            print("Invalid file path.")
+            return nil
+        }
+        
+        do {
+            let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+            if let fileSize = fileAttributes[.size] as? Int64 {
+                return fileSize
+            } else {
+                print("File size attribute is not available.")
+                return nil
+            }
+        } catch {
+            print("Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
 }

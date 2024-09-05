@@ -48,6 +48,8 @@ let defaultOptions = {
   singleSelectedMode: false,
   isCrop: false,
   isCropCircle: false,
+  cropWidth: 0,
+  cropHeight: 0,
 };
 
 export const openPicker = (optionsPicker) => {

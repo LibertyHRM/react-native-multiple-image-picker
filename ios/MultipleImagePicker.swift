@@ -5,6 +5,8 @@ import UIKit
 
 var _isCrop = true
 var _isPreview = true
+var _cropWidth = 0.0
+var _cropHeight = 0.0
 
 extension TLPhotosPickerConfigure {
     var isPreview: Bool {
@@ -20,6 +22,19 @@ extension TLPhotosPickerConfigure {
             _isCrop = newValue
         }
     }
+    var cropWidth: CGFloat {
+        get { return _cropWidth }
+        set {
+            _cropWidth = newValue
+        }
+    }
+    var cropHeight: CGFloat {
+        get { return _cropHeight }
+        set {
+            _cropHeight = newValue
+        }
+    }
+
 }
 
 var config = TLPhotosPickerConfigure()
@@ -63,7 +78,7 @@ class MultipleImagePicker: NSObject, UINavigationControllerDelegate {
         
         if config.mediaType != nil {
             let mediaType =
-                config.mediaType == .image ? PHAssetMediaType.image.rawValue : PHAssetMediaType.video.rawValue
+            config.mediaType == .image ? PHAssetMediaType.image.rawValue : PHAssetMediaType.video.rawValue
             options.predicate = NSPredicate(format: "mediaType = %d", mediaType)
         }
         
@@ -180,6 +195,9 @@ class MultipleImagePicker: NSObject, UINavigationControllerDelegate {
         config.isPreview = self.options["isPreview"] as? Bool ?? false
         
         config.isCrop = (config.singleSelectedMode && self.options["isCrop"] as! Bool)
+
+        config.cropWidth = self.options["cropWidth"] as? CGFloat ?? 0.0
+        config.cropHeight = self.options["cropHeight"] as? CGFloat ?? 0.0
         
         let mediaType = self.options["mediaType"] as! String
         
@@ -269,11 +287,12 @@ extension MultipleImagePicker: CropViewControllerDelegate {
 
                 self.getTopMostViewController()?.present(alert, animated: true) {
                     self.fetchAsset(TLAsset: TLAsset) { object in
-                            
+                        let size = image.getFileSize(filePath)
                         object.data!["crop"] = [
                             "height": image.size.height,
                             "width": image.size.width,
                             "path": filePath,
+                            "size": size ?? 0
                         ]
                             
                         DispatchQueue.main.async {
@@ -330,7 +349,12 @@ extension MultipleImagePicker: TLPhotosPickerViewControllerDelegate {
         cropViewController.doneButtonColor = config.selectedColor
         
         cropViewController.cancelButtonTitle = config.cancelTitle
-        
+
+        cropViewController.customAspectRatio = CGSize(width: config.cropWidth, height: config.cropHeight)
+        cropViewController.aspectRatioPickerButtonHidden = true
+        cropViewController.resetAspectRatioEnabled = false
+        cropViewController.aspectRatioLockEnabled = true
+                
         self.getTopMostViewController()?.present(cropViewController, animated: true, completion: nil)
     }
     
@@ -373,7 +397,7 @@ extension MultipleImagePicker: TLPhotosPickerViewControllerDelegate {
         
         // check logic code for isCrop
         
-        let isCrop = config.isCrop && withTLPHAssets.first?.type == .photo
+        let isCrop = config.isCrop && (withTLPHAssets.first?.type == .photo || withTLPHAssets.first?.type == .livePhoto)
         
         // check difference
         if withTLPHAssetsCount == selectedAssetsCount && withTLPHAssets[withTLPHAssetsCount - 1].phAsset?.localIdentifier == self.selectedAssets[selectedAssetsCount - 1].phAsset?.localIdentifier && !isCrop {
