@@ -18,6 +18,12 @@ export type Results = {
   realPath?: string;
   parentFolderName?: string;
   creationDate?: string;
+  crop?: {
+    width: number;
+    height: number;
+    path: string;
+    size: number;
+  };
 };
 
 export interface VideoResults extends Results {
