@@ -1,6 +1,6 @@
 {
-  "name": "@baronha/react-native-multiple-image-picker",
-  "version": "1.1.9",
+  "name": "@nnpmai/react-native-multiple-image-picker",
+  "version": "1.1.10",
   "description": "react-native-multiple-image-picker enables application to pick images and videos from multiple smart album in iOS/Android, similar to the current facebook app.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -39,14 +39,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/baronha/react-native-multiple-image-picker.git"
+    "url": "https://github.com/LibertyHRM/react-native-multiple-image-picker.git"
   },
   "author": "Baron Ha. <baronn.ha@gmail.com> (https://github.com/baronha)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/baronha/react-native-multiple-image-picker/issues"
+    "url": "https://github.com/LibertyHRM/react-native-multiple-image-picker/issues"
   },
-  "homepage": "https://github.com/baronha/react-native-multiple-image-picker#readme",
+  "homepage": "https://github.com/LibertyHRM/react-native-multiple-image-picker#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
