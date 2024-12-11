@@ -54,9 +54,9 @@
 ## Installation
 
 ```sh
-npm i @baronha/react-native-multiple-image-picker
+npm i @nnpmai/react-native-multiple-image-picker
 // or
-yarn add @baronha/react-native-multiple-image-picker
+yarn add @nnpmai/react-native-multiple-image-picker
 ```
 
 ### iOS
